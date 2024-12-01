@@ -1,0 +1,6 @@
+@TasQ.Projetos.Api_HostAddress = http://localhost:5065
+
+GET {{TasQ.Projetos.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,8 @@
+services:
+  tasq.projetos.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5000
+      - ConnectionStrings__DefaultConnection=Host=tasq.postgres;Port=5432;Database=db_tasq;Username=pgsqluser;Password=pgsqlpwd
+    ports:
+      - "5000"
