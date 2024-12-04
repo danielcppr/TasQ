@@ -1,7 +1,8 @@
 # TasQ
 # Observações iniciais: 
 Por ter que ter trabalhado além do horário para resolver urgências na empresa, não tive tempo hábil de finalizar todo o teste. Porém tenho muito interesse nessa vaga e gostaria de uma próxima conversa.
-Seguem os pontos pendentes: 
+
+### Seguem os pontos pendentes: 
 - Implementação das Queries para leitura de dados [CQRS](#api--application);
     - Implementação do AutoMapper para melhor mapeamento das "DTOs"
 - Retorno das Mensagens de erros de validação (a estrutura básica utilizando Notification Pattern está implementada porém não está sendo consumida, logo, as validações com erro não evidenciam as mensagens de erro).
