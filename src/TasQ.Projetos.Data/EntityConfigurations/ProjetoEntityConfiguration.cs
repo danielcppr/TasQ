@@ -9,11 +9,15 @@ public class ProjetoEntityConfiguration : IEntityTypeConfiguration<Projeto>
     public void Configure(EntityTypeBuilder<Projeto> builder)
     {
         builder.Property(p => p.Descricao)
-            .HasColumnType("varchar(250)");
+            .HasColumnType("varchar(1000)");
+
+        builder.Property(p => p.Titulo)
+            .HasColumnType("varchar(50)");
 
         builder.HasMany(p => p.Tarefas)
             .WithOne(t => t.Projeto)
-            .HasForeignKey(t => t.ProjetoId);
+            .HasForeignKey(t => t.ProjetoId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.OwnsMany(
             p => p.UsuariosProjetos, // Coleção de Value Objects
@@ -33,7 +37,5 @@ public class ProjetoEntityConfiguration : IEntityTypeConfiguration<Projeto>
                 up.WithOwner() // Value Object pertence a Projeto
                     .HasForeignKey("ProjetoId"); // Chave estrangeira para Projeto
             });
-
-
     }
 }

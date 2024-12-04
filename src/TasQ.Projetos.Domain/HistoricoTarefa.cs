@@ -4,18 +4,18 @@ namespace TasQ.Projetos.Domain;
 
 public class HistoricoTarefa : Entity
 {
-    public Guid UsuarioId { get; }
-    public DateTime Data { get; }
-    public Guid TarefaId { get; }
-    public HistoricoItem HistoricoItem { get; }
+    public Guid UsuarioLogadoId { get; private set; }
+    public Guid TarefaId { get; private set; }
+    public DateTime DataHora { get; private set; }
     
     // EF Rel.
-    public Tarefa Tarefa { get; set; }
+    public virtual HistoricoItem HistoricoItem { get; protected set; }
+    public virtual Tarefa Tarefa { get; protected set; }
 
-    public HistoricoTarefa(Guid usuarioId, Guid tarefaId, HistoricoItem historicoItem)
+    public HistoricoTarefa(Guid usuarioLogadoId, Guid tarefaId, HistoricoItem historicoItem)
     {
-        UsuarioId = usuarioId;
-        Data = DateTime.Now;
+        UsuarioLogadoId = usuarioLogadoId;
+        DataHora = DateTime.UtcNow;
         TarefaId = tarefaId;
         HistoricoItem = historicoItem;  
     }

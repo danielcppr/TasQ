@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using FluentValidation.Results;
+using TasQ.Core.Messages;
 using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace TasQ.Core.DomainObjects;
@@ -8,32 +10,34 @@ public abstract class Entity
     [Key]
     public Guid Id { get; set; }
     public DateTime? ExcluidoEm { get; private set; }
+    
+    [NotMapped]
+    public IReadOnlyCollection<Event> Notificacoes => _notificacoes.AsReadOnly();
 
-    protected void ExecutarSoftDelete() => ExcluidoEm = DateTime.Now;
-
-    //private List<Event> _notificacoes;
-    //public IReadOnlyCollection<Event> Notificacoes => _notificacoes?.AsReadOnly();
+    private List<Event> _notificacoes;
 
     protected Entity()
     {
         Id = Guid.NewGuid();
+        _notificacoes = [];
+    }
+    public void ExecutarSoftDelete() => ExcluidoEm = DateTime.UtcNow;
+
+    public void AdicionarEvento(Event evento)
+    {
+        _notificacoes ??= [];
+        _notificacoes.Add(evento);
     }
 
-    //public void AdicionarEvento(Event evento)
-    //{
-    //    _notificacoes = _notificacoes ?? new List<Event>();
-    //    _notificacoes.Add(evento);
-    //}
+    public void RemoverEvento(Event eventItem)
+    {
+        _notificacoes?.Remove(eventItem);
+    }
 
-    //public void RemoverEvento(Event eventItem)
-    //{
-    //    _notificacoes?.Remove(eventItem);
-    //}
-
-    //public void LimparEventos()
-    //{
-    //    _notificacoes?.Clear();
-    //}
+    public void LimparEventos()
+    {
+        _notificacoes?.Clear();
+    }
 
     public override bool Equals(object obj)
     {
@@ -45,7 +49,7 @@ public abstract class Entity
         return Id.Equals(compareTo.Id);
     }
 
-    public static bool operator ==(Entity a, Entity b)
+    public static bool operator ==(Entity? a, Entity? b)
     {
         if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
             return true;
@@ -56,7 +60,7 @@ public abstract class Entity
         return a.Equals(b);
     }
 
-    public static bool operator !=(Entity a, Entity b)
+    public static bool operator !=(Entity? a, Entity? b)
     {
         return !(a == b);
     }
@@ -71,9 +75,10 @@ public abstract class Entity
         return $"{GetType().Name} [Id={Id}]";
     }
 
-    public virtual ValidationResult Validar(Func<bool> validacao, string mensagemFalha)
+    protected virtual ValidationResult Validar(Func<bool> validacao, string mensagemFalha, bool lancarException = false)
     {
         if (validacao()) return new ValidationResult();
+        else if (lancarException) throw new InvalidDomainException(mensagemFalha);
 
         var falhas = new List<ValidationFailure> { new(validacao.Method.Name, mensagemFalha) };
         return new ValidationResult(falhas);

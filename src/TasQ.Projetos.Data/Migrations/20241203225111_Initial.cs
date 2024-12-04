@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TasQ.Projetos.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,8 +16,8 @@ namespace TasQ.Projetos.Data.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    nome = table.Column<string>(type: "varchar(100)", nullable: false),
-                    descricao = table.Column<string>(type: "varchar(250)", nullable: false),
+                    titulo = table.Column<string>(type: "varchar(50)", nullable: false),
+                    descricao = table.Column<string>(type: "varchar(1000)", nullable: true),
                     prazo_finalizacao = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     is_finalizado = table.Column<bool>(type: "boolean", nullable: false),
                     excluido_em = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
@@ -32,11 +32,12 @@ namespace TasQ.Projetos.Data.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    titulo = table.Column<string>(type: "varchar(100)", nullable: false),
-                    descricao = table.Column<string>(type: "varchar(250)", nullable: false),
-                    data_vencimento = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    titulo = table.Column<string>(type: "varchar(50)", nullable: false),
+                    descricao = table.Column<string>(type: "varchar(1000)", nullable: false),
+                    data_vencimento = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     status = table.Column<int>(type: "integer", nullable: false),
-                    usuario_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    prioridade = table.Column<short>(type: "smallint", nullable: false),
+                    usuario_responsavel_id = table.Column<Guid>(type: "uuid", nullable: false),
                     projeto_id = table.Column<Guid>(type: "uuid", nullable: false),
                     excluido_em = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
@@ -72,10 +73,11 @@ namespace TasQ.Projetos.Data.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    usuario_logado_id = table.Column<Guid>(type: "uuid", nullable: false),
                     tarefa_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CampoAtualizado = table.Column<string>(type: "text", nullable: false),
-                    ValorNovo = table.Column<string>(type: "text", nullable: false),
-                    ValorAnterior = table.Column<string>(type: "text", nullable: false),
+                    data_hora = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    tipo_atualizacao = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    valor_novo = table.Column<string>(type: "text", nullable: false),
                     excluido_em = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>

@@ -8,23 +8,24 @@ public class HistoricoTarefaEntityConfiguration : IEntityTypeConfiguration<Histo
 {
     public void Configure(EntityTypeBuilder<HistoricoTarefa> builder)
     {
-        builder.HasOne(h => h.Tarefa)
-            .WithMany(t => t.Historico)
-            .HasForeignKey(h => h.TarefaId);
+        builder.Property(p => p.UsuarioLogadoId)
+            .HasColumnName("usuario_logado_id")
+            .IsRequired();
 
         builder.OwnsOne(h => h.HistoricoItem, i =>
         {
-            i.Property(p => p.CampoAtualizado)
-                .HasColumnName("CampoAtualizado");
-            i.Property(p => p.ValorAnterior)
-                .HasColumnName("ValorAnterior");
             i.Property(p => p.ValorNovo)
-                .HasColumnName("ValorNovo");
+                .HasColumnName("valor_novo")
+                .IsRequired();
+
+            i.Property(p => p.Tipo)
+                .HasColumnName("tipo_atualizacao")
+                .HasColumnType("varchar(50)")
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (TipoAtualizacaoTarefaEnum)Enum.Parse(typeof(TipoAtualizacaoTarefaEnum), v))
+                .HasMaxLength(50)
+                .IsRequired();
         });
-
-        //builder.HasMany(t => t.Historico)
-        //    .WithOne(h => h.Tarefa)
-        //    .HasForeignKey(h => h.TarefaId);
-
     }
 }

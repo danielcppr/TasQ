@@ -1,6 +1,63 @@
-@TasQ.Projetos.Api_HostAddress = http://localhost:5065
+@TasQ.Projetos.Api_HostAddress = http://localhost:5000
+@GlobalUsuarioLogadoId = 3fa85f64-5717-4562-b3fc-2c963f66afa6
+@ProjetoId = 2a55ecb3-a7bd-4693-9636-2b224ba984da
+@TarefaId = e5e61810-cdbc-4b2e-b436-7f9dd3477957
 
-GET {{TasQ.Projetos.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+
+POST {{TasQ.Projetos.Api_HostAddress}}/api/Projeto/CriarProjeto
+Accept: */*
+Content-Type: application/json
+
+{
+  "criadorUsuarioId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "titulo": "titulo criado",
+  "descricao": "descricao projeto",
+  "dataFinalizacao": "2025-12-03T16:41:56.268Z"
+}
+
+###
+
+POST {{TasQ.Projetos.Api_HostAddress}}/api/Projeto/AdicionarTarefa
+Accept: */*
+Content-Type: application/json
+
+{
+  "projetoId": "{{ProjetoId}}",
+  "criadorUsuarioId": "{{GlobalUsuarioLogadoId}}",
+  "responsavelUsuarioId": "{{GlobalUsuarioLogadoId}}",
+  "titulo": "tarefa nova",
+  "descricao": "testar aplicação",
+  "dataVencimento": "2025-12-03T16:44:24.086Z",
+  "prioridade": 0
+}
+###
+
+PATCH {{TasQ.Projetos.Api_HostAddress}}/api/Tarefa/AtualizarParcial?tarefaId={{TarefaId}}
+Accept: */*
+X-Usuario-Logado-Id: {{GlobalUsuarioLogadoId}}
+Content-Type: application/json
+
+{
+  "dados": {
+    "titulo": "titulo novo alterado",
+    "descricao": "não sera alterada",
+    "status": 2
+  },
+  "camposAtualizar": [
+    "titulo", 
+    "status"
+  ]
+}
+
+###
+
+POST {{TasQ.Projetos.Api_HostAddress}}/api/Tarefa/AdicionarComentario?tarefaId={{TarefaId}}
+Accept: */*
+X-Usuario-Logado-Id: {{GlobalUsuarioLogadoId}}
+Content-Type: application/json
+
+{
+  "conteudo": "Comentario na tarefa teste"
+}
 
 ###

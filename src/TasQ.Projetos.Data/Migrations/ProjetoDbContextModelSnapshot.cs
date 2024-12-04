@@ -29,6 +29,10 @@ namespace TasQ.Projetos.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<DateTime>("DataHora")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("data_hora");
+
                     b.Property<DateTime?>("ExcluidoEm")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("excluido_em");
@@ -36,6 +40,10 @@ namespace TasQ.Projetos.Data.Migrations
                     b.Property<Guid>("TarefaId")
                         .HasColumnType("uuid")
                         .HasColumnName("tarefa_id");
+
+                    b.Property<Guid>("UsuarioLogadoId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("usuario_logado_id");
 
                     b.HasKey("Id")
                         .HasName("pk_historico_tarefa");
@@ -54,8 +62,7 @@ namespace TasQ.Projetos.Data.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnType("varchar(250)")
+                        .HasColumnType("varchar(1000)")
                         .HasColumnName("descricao");
 
                     b.Property<DateTime?>("ExcluidoEm")
@@ -66,14 +73,14 @@ namespace TasQ.Projetos.Data.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_finalizado");
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("nome");
-
                     b.Property<DateTime?>("PrazoFinalizacao")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("prazo_finalizacao");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("titulo");
 
                     b.HasKey("Id")
                         .HasName("pk_projetos");
@@ -88,18 +95,22 @@ namespace TasQ.Projetos.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<DateTime?>("DataVencimento")
+                    b.Property<DateTime>("DataVencimento")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("data_vencimento");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("varchar(250)")
+                        .HasColumnType("varchar(1000)")
                         .HasColumnName("descricao");
 
                     b.Property<DateTime?>("ExcluidoEm")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("excluido_em");
+
+                    b.Property<short>("Prioridade")
+                        .HasColumnType("smallint")
+                        .HasColumnName("prioridade");
 
                     b.Property<Guid>("ProjetoId")
                         .HasColumnType("uuid")
@@ -111,12 +122,12 @@ namespace TasQ.Projetos.Data.Migrations
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("titulo");
 
-                    b.Property<Guid>("UsuarioId")
+                    b.Property<Guid>("UsuarioResponsavelId")
                         .HasColumnType("uuid")
-                        .HasColumnName("usuario_id");
+                        .HasColumnName("usuario_responsavel_id");
 
                     b.HasKey("Id")
                         .HasName("pk_tarefas");
@@ -141,20 +152,16 @@ namespace TasQ.Projetos.Data.Migrations
                                 .HasColumnType("uuid")
                                 .HasColumnName("id");
 
-                            b1.Property<string>("CampoAtualizado")
+                            b1.Property<string>("Tipo")
                                 .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("CampoAtualizado");
-
-                            b1.Property<string>("ValorAnterior")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("ValorAnterior");
+                                .HasMaxLength(50)
+                                .HasColumnType("varchar(50)")
+                                .HasColumnName("tipo_atualizacao");
 
                             b1.Property<string>("ValorNovo")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("ValorNovo");
+                                .HasColumnName("valor_novo");
 
                             b1.HasKey("HistoricoTarefaId");
 
